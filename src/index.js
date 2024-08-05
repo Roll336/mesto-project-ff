@@ -96,7 +96,7 @@ popups.forEach((popupAnimate) => {
   popupAnimate.classList.add("popup_is-animated");
 });
 
-export function handleImageClick(name, link) {
+function handleImageClick(name, link) {
   openPopup(popupTypeImg);
   popupImg.src = link;
   popupImg.alt = "На фотографии " + name;
