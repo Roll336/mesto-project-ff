@@ -2,6 +2,7 @@ import "./index.css";
 import { initialCards } from "./components/cards.js";
 import { createCard, deleteCard, handleClickLike } from "./components/card.js";
 import { openPopup, closePopup } from "./components/modal.js";
+import { enableValidation, cleanValidation, validationConfig } from "./components/validation.js";
 
 const placesList = document.querySelector(".places__list");
 const editButton = document.querySelector(".profile__edit-button");
@@ -22,9 +23,11 @@ const newCardFormName = newCardForm.querySelector(
   ".popup__input_type_card-name"
 );
 const newCardFormUrl = newCardForm.querySelector(".popup__input_type_url");
+//const addNewCardButton = newCardForm.querySelector('.popup__button');
 const popupTypeImg = document.querySelector(".popup_type_image");
 const popupImg = popupTypeImg.querySelector(".popup__image");
 const popupCaption = popupTypeImg.querySelector(".popup__caption");
+
 
 initialCards.forEach((item) => {
   const newCard = createCard(
@@ -40,12 +43,15 @@ initialCards.forEach((item) => {
 
 editButton.addEventListener("click", (evt) => {
   openPopup(popupEdit);
+  editForm.reset();
   editFormName.value = profileTitle.textContent;
   editFormDescription.value = profileDescription.textContent;
+  cleanValidation(editForm, validationConfig);
 });
 
 addCardButton.addEventListener("click", (evt) => {
   openPopup(popupNewCard);
+  //cleanValidation(newCardForm, validationConfig);
 });
 
 closeButtons.forEach((popupCloser) =>
@@ -87,6 +93,7 @@ function handleCardFormSubmit(evt) {
   );
   placesList.prepend(newCard);
   newCardForm.reset();
+  cleanValidation(newCardForm, validationConfig);
   closePopup(popupNewCard);
 }
 
@@ -96,12 +103,20 @@ popups.forEach((popupAnimate) => {
   popupAnimate.classList.add("popup_is-animated");
 });
 
+
 function handleImageClick(name, link) {
   openPopup(popupTypeImg);
   popupImg.src = link;
   popupImg.alt = "На фотографии " + name;
   popupCaption.textContent = name;
-}
+};
+
+enableValidation(validationConfig);
+
+
+
+
+
 
 // @todo: Темплейт карточки
 
