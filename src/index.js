@@ -1,5 +1,5 @@
 import "./index.css";
-import { initialCards } from "./components/cards.js";
+//import { initialCards } from "./components/cards.js";
 import { createCard, deleteCard, handleClickLike } from "./components/card.js";
 import { openPopup, closePopup } from "./components/modal.js";
 import { enableValidation, cleanValidation, validationConfig } from "./components/validation.js";
@@ -18,6 +18,7 @@ const editFormDescription = editForm.querySelector(
 );
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
+const profileImage = document.querySelector('.profile__image');
 const newCardForm = document.querySelector('form[name="new-place"]');
 const newCardFormName = newCardForm.querySelector(
   ".popup__input_type_card-name"
@@ -29,17 +30,17 @@ const popupImg = popupTypeImg.querySelector(".popup__image");
 const popupCaption = popupTypeImg.querySelector(".popup__caption");
 
 
-initialCards.forEach((item) => {
-  const newCard = createCard(
-    item.name,
-    item.link,
-    openPopup,
-    handleImageClick,
-    handleClickLike,
-    deleteCard
-  );
-  placesList.append(newCard);
-});
+//initialCards.forEach((item) => {
+ // const newCard = createCard(
+   // item.name,
+    //item.link,
+    //openPopup,
+    //handleImageClick,
+    //handleClickLike,
+    //deleteCard
+  //);
+  //placesList.append(newCard);
+//});
 
 editButton.addEventListener("click", (evt) => {
   openPopup(popupEdit);
@@ -113,9 +114,47 @@ function handleImageClick(name, link) {
 
 enableValidation(validationConfig);
 
+//return fetch('https://nomoreparties.co/v1/wff-cohort-20/cards', {
+  //headers: {
+    //authorization: '7798c46b-b629-4d05-890d-b06a02ee5814'
+  //}
+//})
+  //.then(res => res.json())
+  //.then((result) => {
+    //console.log(result);
+  //}); 
+  fetch('https://nomoreparties.co/v1/wff-cohort-20/users/me', {
+    headers: {
+      authorization: '7798c46b-b629-4d05-890d-b06a02ee5814'
+    }
+  })
+    .then(res => res.json())
+    .then((data) => {
+      profileTitle.textContent = data.name;
+      profileDescription.textContent = data.about;
+      profileImage.src = data.avatar;
+    }); 
 
+  function getInitialCards() {
 
+    fetch('https://nomoreparties.co/v1/wff-cohort-20/cards', {
+      headers: {
+        authorization: '7798c46b-b629-4d05-890d-b06a02ee5814'
+      }
+    })
+    .then(res => res.json())
+    .then((data) => {
+    data.forEach((item) => {
+    const newCard = createCard(item.name, item.link, openPopup, handleClickLike, deleteCard)
+    placesList.append(newCard)
+    })
+    })
+    .catch((err) => {
+    console.log(err)
+    })
+  };
 
+  getInitialCards();
 
 
 // @todo: Темплейт карточки
