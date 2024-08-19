@@ -31,4 +31,24 @@
   background-color: transparent;
   pointer-events: none;
 }
+  .likes-counter {
+    font-size: 13px;
+    line-height: 16px;
+    text-align: center;
+  }
+
+  .likes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 3px
+  }
   
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }

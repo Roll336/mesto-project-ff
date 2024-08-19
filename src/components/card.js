@@ -3,6 +3,7 @@ const cardTemplate = document.querySelector("#card-template").content;
 function createCard(
   name,
   link,
+  likes,
   openPopup,
   handleImageClick,
   handleClickLike,
@@ -11,10 +12,12 @@ function createCard(
   const card = cardTemplate.querySelector(".card").cloneNode(true);
   const cardImage = card.querySelector(".card__image");
   const likeButton = card.querySelector(".card__like-button");
+  const likesCounter = card.querySelector(".likes-counter");
   const deleteButton = card.querySelector(".card__delete-button");
   card.querySelector(".card__title").textContent = name;
   cardImage.src = link;
   cardImage.alt = "На фотографии " + name;
+  likesCounter.textContent = likes;
   cardImage.addEventListener("click", (evt) => {
     handleImageClick(name, link);
   });

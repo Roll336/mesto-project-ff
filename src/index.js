@@ -24,6 +24,7 @@ const newCardFormName = newCardForm.querySelector(
   ".popup__input_type_card-name"
 );
 const newCardFormUrl = newCardForm.querySelector(".popup__input_type_url");
+
 //const addNewCardButton = newCardForm.querySelector('.popup__button');
 const popupTypeImg = document.querySelector(".popup_type_image");
 const popupImg = popupTypeImg.querySelector(".popup__image");
@@ -73,8 +74,24 @@ function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   const nameInput = editFormName.value;
   const jobInput = editFormDescription.value;
-  profileTitle.textContent = nameInput;
-  profileDescription.textContent = jobInput;
+ // profileTitle.textContent = nameInput;
+  //profileDescription.textContent = jobInput;
+  fetch('https://nomoreparties.co/v1/wff-cohort-20/users/me', {
+    method: 'PATCH',
+    headers: {
+      authorization: '7798c46b-b629-4d05-890d-b06a02ee5814',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      name: nameInput,
+      about: jobInput
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    profileTitle.textContent = data.name;
+    profileDescription.textContent = data.about;
+  });
   closePopup(popupEdit);
 }
 
@@ -84,14 +101,27 @@ function handleCardFormSubmit(evt) {
   evt.preventDefault();
   const nameInput = newCardFormName.value;
   const urlInput = newCardFormUrl.value;
+  const likes = 0;
   const newCard = createCard(
     nameInput,
     urlInput,
+    likes,
     openPopup,
     handleImageClick,
     handleClickLike,
     deleteCard
   );
+  fetch('https://nomoreparties.co/v1/wff-cohort-20/cards', {
+    method: 'POST',
+    headers: {
+      authorization: '7798c46b-b629-4d05-890d-b06a02ee5814',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      name: nameInput,
+      link: urlInput
+    })
+  });
   placesList.prepend(newCard);
   newCardForm.reset();
   cleanValidation(newCardForm, validationConfig);
@@ -123,38 +153,61 @@ enableValidation(validationConfig);
   //.then((result) => {
     //console.log(result);
   //}); 
-  fetch('https://nomoreparties.co/v1/wff-cohort-20/users/me', {
+ const getUserId =
+   fetch('https://nomoreparties.co/v1/wff-cohort-20/users/me', {
     headers: {
       authorization: '7798c46b-b629-4d05-890d-b06a02ee5814'
     }
-  })
+    })
     .then(res => res.json())
-    .then((data) => {
-      profileTitle.textContent = data.name;
-      profileDescription.textContent = data.about;
-      profileImage.src = data.avatar;
-    }); 
+    //.then(res => console.log(res))
+    //.then((data) => {
+      //profileTitle.textContent = data.name;
+      //profileDescription.textContent = data.about;
+      //profileImage.src = data.avatar;
+    //}); 
+  
 
-  function getInitialCards() {
-
-    fetch('https://nomoreparties.co/v1/wff-cohort-20/cards', {
+  const getInitialCards = 
+   fetch('https://nomoreparties.co/v1/wff-cohort-20/cards', {
       headers: {
         authorization: '7798c46b-b629-4d05-890d-b06a02ee5814'
       }
-    })
-    .then(res => res.json())
-    .then((data) => {
-    data.forEach((item) => {
-    const newCard = createCard(item.name, item.link, openPopup, handleClickLike, deleteCard)
+  })
+  .then(res => res.json())
+    //.then((data) => {
+    //data.forEach((item) => {
+    //const newCard = createCard(item.name, item.link, openPopup, handleClickLike, deleteCard)
+    //placesList.append(newCard)
+    //})
+    //})
+    //.catch((err) => {
+    //console.log(err)
+    //});
+  
+const promises = [getUserId, getInitialCards];
+  
+Promise.all(promises)
+.then((data) => {
+  console.log(data[0]._id, data[1]);
+  profileTitle.textContent = data[0].name;
+  profileDescription.textContent = data[0].about;
+  profileImage.src = data[0].avatar;
+  data[1].forEach((item) => {
+    const newCard = createCard(item.name, item.link, item.likes.length, openPopup, handleImageClick, handleClickLike, deleteCard);
+    if (data[0]._id !== data[1]._id) {
+     const dltBtn = newCard.querySelector('.card__delete-button');
+     dltBtn.classList.add('visually-hidden');
+     dltBtn.setAttribute('disabled', true);
+    }
     placesList.append(newCard)
-    })
-    })
-    .catch((err) => {
+  })
+})
+  .catch((err) => {
     console.log(err)
-    })
-  };
+}); 
 
-  getInitialCards();
+
 
 
 // @todo: Темплейт карточки
