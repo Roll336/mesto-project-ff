@@ -30,7 +30,9 @@ function createCard(
   cardImage.addEventListener("click", (evt) => {
     handleImageClick(name, link);
   });
-  likeButton.addEventListener("click", handleClickLike);
+  likeButton.addEventListener("click", () => {
+    handleClickLike(cardId, likeButton, likesCounter);
+  });
   deleteButton.addEventListener("click", () => {
     deleteCard(cardId, card);
   })
@@ -49,8 +51,37 @@ function delCardApi(config, cardId) {
   })
 }
 
-function handleClickLike(evt) {
-  evt.target.classList.toggle("card__like-button_is-active");
+function handleClickLike(cardId, likeButton, likesCounter) {
+  likeButton.classList.toggle("card__like-button_is-active");
+  if (likeButton.classList.contains("card__like-button_is-active")) {
+    handleClikeLIkeAddApi(config, cardId)
+    .then(res => res.json())
+    .then((data) => {
+      likesCounter.textContent = data.likes.length;
+    })
+  }
+  else {
+    handleClikeLIkeDelApi(config, cardId)
+    .then(res => res.json())
+    .then((data) => {
+      likesCounter.textContent = data.likes.length;
+    })
+  }
 }
+
+function handleClikeLIkeAddApi(config, cardId) {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: 'PUT', 
+    headers: config.headers
+  })
+}
+
+function handleClikeLIkeDelApi(config, cardId) {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: 'DELETE', 
+    headers: config.headers
+  })
+}
+
 
 export { createCard, deleteCard, handleClickLike };

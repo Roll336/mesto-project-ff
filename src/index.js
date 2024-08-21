@@ -115,7 +115,6 @@ function handleCardFormSubmit(evt) {
   })
   .then(res => res.json())
   .then((data) => {
-    console.log(data);
     const newCard = createCard(
       nameInput,
       urlInput,
@@ -182,18 +181,20 @@ const getInitialCards = (config) => {
 const promises = [getUserId(config), getInitialCards(config)];
   
 Promise.all(promises)
-.then((data) => {
-  profileTitle.textContent = data[0].name;
-  profileDescription.textContent = data[0].about;
-  profileImage.src = data[0].avatar;
-  data[1].forEach((item) => {
-    console.log(item);
+.then(([userRes, cardRes]) => {
+  profileTitle.textContent = userRes.name;
+  profileDescription.textContent = userRes.about;
+  profileImage.src = userRes.avatar;
+  cardRes.forEach((item) => {
     const newCard = createCard(item.name, item.link, item.owner._id, item._id, item.likes.length, openPopup, handleImageClick, handleClickLike, deleteCard);
-    if (data[0]._id !== item.owner._id) {
+    if (userRes._id !== item.owner._id) {
      const dltBtn = newCard.querySelector('.card__delete-button');
      dltBtn.classList.add('visually-hidden');
      dltBtn.setAttribute('disabled', true);
-    }
+    };
+    const likeBtn = newCard.querySelector('.card__like-button');
+    const myLikes = item.likes.some((likesArr) => {return likesArr._id === userRes._id});
+    if (myLikes) likeBtn.classList.add("card__like-button_is-active");
     placesList.append(newCard)
   })
 })
