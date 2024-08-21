@@ -101,16 +101,7 @@ function handleCardFormSubmit(evt) {
   evt.preventDefault();
   const nameInput = newCardFormName.value;
   const urlInput = newCardFormUrl.value;
-  const likes = 0;
-  const newCard = createCard(
-    nameInput,
-    urlInput,
-    likes,
-    openPopup,
-    handleImageClick,
-    handleClickLike,
-    deleteCard
-  );
+  
   fetch('https://nomoreparties.co/v1/wff-cohort-20/cards', {
     method: 'POST',
     headers: {
@@ -121,8 +112,23 @@ function handleCardFormSubmit(evt) {
       name: nameInput,
       link: urlInput
     })
-  });
+  })
+  .then(res => res.json())
+  .then((data) => {
+    console.log(data);
+    const newCard = createCard(
+      nameInput,
+      urlInput,
+      data.owner._id,
+      data._id,
+      data.likes.length,
+      openPopup,
+      handleImageClick,
+      handleClickLike,
+      deleteCard
+    );
   placesList.prepend(newCard);
+})
   newCardForm.reset();
   cleanValidation(newCardForm, validationConfig);
   closePopup(popupNewCard);
@@ -143,59 +149,47 @@ function handleImageClick(name, link) {
 };
 
 enableValidation(validationConfig);
+  
 
-//return fetch('https://nomoreparties.co/v1/wff-cohort-20/cards', {
-  //headers: {
-    //authorization: '7798c46b-b629-4d05-890d-b06a02ee5814'
-  //}
-//})
-  //.then(res => res.json())
-  //.then((result) => {
-    //console.log(result);
-  //}); 
- const getUserId =
-   fetch('https://nomoreparties.co/v1/wff-cohort-20/users/me', {
-    headers: {
-      authorization: '7798c46b-b629-4d05-890d-b06a02ee5814'
+const config = {
+  baseUrl: 'https://nomoreparties.co/v1/wff-cohort-20',
+  headers: {
+    authorization: '7798c46b-b629-4d05-890d-b06a02ee5814',
+    'Content-Type': 'application/json'
+  }
+};
+
+const getUserId = (config) => {
+  return fetch(`${config.baseUrl}/users/me`, {headers: config.headers})
+  .then(res => {
+    if (res.ok) {
+     return res.json();
     }
-    })
-    .then(res => res.json())
-    //.then(res => console.log(res))
-    //.then((data) => {
-      //profileTitle.textContent = data.name;
-      //profileDescription.textContent = data.about;
-      //profileImage.src = data.avatar;
-    //}); 
-  
-
-  const getInitialCards = 
-   fetch('https://nomoreparties.co/v1/wff-cohort-20/cards', {
-      headers: {
-        authorization: '7798c46b-b629-4d05-890d-b06a02ee5814'
-      }
   })
-  .then(res => res.json())
-    //.then((data) => {
-    //data.forEach((item) => {
-    //const newCard = createCard(item.name, item.link, openPopup, handleClickLike, deleteCard)
-    //placesList.append(newCard)
-    //})
-    //})
-    //.catch((err) => {
-    //console.log(err)
-    //});
-  
-const promises = [getUserId, getInitialCards];
+}
+
+
+const getInitialCards = (config) => {
+    return fetch(`${config.baseUrl}/cards`, {headers: config.headers})
+    .then(res => {
+      if (res.ok) {
+       return res.json();
+       
+      }
+    })
+}
+
+const promises = [getUserId(config), getInitialCards(config)];
   
 Promise.all(promises)
 .then((data) => {
-  console.log(data[0]._id, data[1]);
   profileTitle.textContent = data[0].name;
   profileDescription.textContent = data[0].about;
   profileImage.src = data[0].avatar;
   data[1].forEach((item) => {
-    const newCard = createCard(item.name, item.link, item.likes.length, openPopup, handleImageClick, handleClickLike, deleteCard);
-    if (data[0]._id !== data[1]._id) {
+    console.log(item);
+    const newCard = createCard(item.name, item.link, item.owner._id, item._id, item.likes.length, openPopup, handleImageClick, handleClickLike, deleteCard);
+    if (data[0]._id !== item.owner._id) {
      const dltBtn = newCard.querySelector('.card__delete-button');
      dltBtn.classList.add('visually-hidden');
      dltBtn.setAttribute('disabled', true);
@@ -206,8 +200,6 @@ Promise.all(promises)
   .catch((err) => {
     console.log(err)
 }); 
-
-
 
 
 // @todo: Темплейт карточки

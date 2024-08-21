@@ -1,8 +1,17 @@
 const cardTemplate = document.querySelector("#card-template").content;
+const config = {
+  baseUrl: 'https://nomoreparties.co/v1/wff-cohort-20',
+  headers: {
+    authorization: '7798c46b-b629-4d05-890d-b06a02ee5814',
+    'Content-Type': 'application/json'
+  }
+};
 
 function createCard(
   name,
   link,
+  userId,
+  cardId,
   likes,
   openPopup,
   handleImageClick,
@@ -22,12 +31,22 @@ function createCard(
     handleImageClick(name, link);
   });
   likeButton.addEventListener("click", handleClickLike);
-  deleteButton.addEventListener("click", deleteCard);
+  deleteButton.addEventListener("click", () => {
+    deleteCard(cardId, card);
+  })
   return card;
 }
 
-function deleteCard(evt) {
-  evt.target.closest(".card").remove();
+function deleteCard(cardId, card) {
+  delCardApi(config, cardId);
+  card.remove();
+}
+
+function delCardApi(config, cardId) {
+  return fetch(`${config.baseUrl}/cards/${cardId}`, {
+    method: 'DELETE', 
+    headers: config.headers
+  })
 }
 
 function handleClickLike(evt) {
