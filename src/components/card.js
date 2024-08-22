@@ -1,4 +1,4 @@
-import { config, delCardApi, handleClikeLIkeAddApi, handleClikeLIkeDelApi } from "./api"
+import { config, delCardApi, handleClikeLIkeAddApi, handleClikeLIkeDelApi } from "./api.js"
 
 const cardTemplate = document.querySelector("#card-template").content;
 

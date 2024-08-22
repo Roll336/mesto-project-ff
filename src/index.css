@@ -11,15 +11,6 @@
 @import url('../blocks/popup/_is-animated/popup_is-animated.css');
 @import url('../blocks/popup/_is-opened/popup_is-opened.css');
 
-.popup__input_type_error {
-    border-bottom-color: red;
-  } 
-
-.popup__error_visible {
-  font-size: 12px;
-  line-height: 14px;
-  color: red;
-}
 
 .popup__button_disabled {
   color: rgba(0, 0, 0, 0.15);
@@ -31,6 +22,18 @@
   background-color: transparent;
   pointer-events: none;
 }
+
+.popup__input_type_error {
+    border-bottom-color: red;
+  } 
+
+.popup__error_visible {
+  font-size: 12px;
+  line-height: 14px;
+  color: red;
+}
+
+
   .likes-counter {
     font-size: 13px;
     line-height: 16px;
@@ -53,4 +56,3 @@
     white-space: nowrap;
   }
 
-  
