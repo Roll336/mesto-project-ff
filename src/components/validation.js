@@ -44,8 +44,9 @@ const showInputError = (formElement, inputElement, errorMessage, settings) => {
   
     inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', function () {
-       toggleButtonState(inputList, buttonElement, settings);
         checkInputValidity(formElement, inputElement, settings);
+        toggleButtonState(inputList, buttonElement, settings);
+        
       });
     });
   };
@@ -81,9 +82,11 @@ const showInputError = (formElement, inputElement, errorMessage, settings) => {
     const inputList = Array.from(formElement.querySelectorAll(settings.inputSelector));
     const buttonElement = formElement.querySelector(settings.submitButtonSelector);
     inputList.forEach((input) => {
+      checkInputValidity(formElement, input, settings);
       hideInputError(formElement, input, settings)
     });
+    
     toggleButtonState(inputList, buttonElement, settings);
   };
 
-  export { enableValidation, cleanValidation, validationConfig };
+  export { enableValidation, cleanValidation, validationConfig};
