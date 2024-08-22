@@ -38,14 +38,14 @@
   inset: 0;
   opacity: 0;
   transition: 0.3s;
-  background: transparent url("../../../images/avatar-icon.svg") center no-repeat;
+  background: transparent url("../../../images/avatar-icon.svg") center
+    no-repeat;
   background-size: 26px;
 }
 
 .profile__image:hover:hover::after {
   opacity: 1;
 }
-
 
 @media screen and (max-width: 740px) {
   .profile__image {

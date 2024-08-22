@@ -1,16 +1,15 @@
-@import url('../vendor/normalize.css');
-@import url('../vendor/fonts.css');
-@import url('../blocks/page/page.css');
-@import url('../blocks/header/header.css');
-@import url('../blocks/content/content.css');
-@import url('../blocks/footer/footer.css');
-@import url('../blocks/profile/profile.css');
-@import url('../blocks/places/places.css');
-@import url('../blocks/card/card.css');
-@import url('../blocks/popup/popup.css');
-@import url('../blocks/popup/_is-animated/popup_is-animated.css');
-@import url('../blocks/popup/_is-opened/popup_is-opened.css');
-
+@import url("../vendor/normalize.css");
+@import url("../vendor/fonts.css");
+@import url("../blocks/page/page.css");
+@import url("../blocks/header/header.css");
+@import url("../blocks/content/content.css");
+@import url("../blocks/footer/footer.css");
+@import url("../blocks/profile/profile.css");
+@import url("../blocks/places/places.css");
+@import url("../blocks/card/card.css");
+@import url("../blocks/popup/popup.css");
+@import url("../blocks/popup/_is-animated/popup_is-animated.css");
+@import url("../blocks/popup/_is-opened/popup_is-opened.css");
 
 .popup__button_disabled {
   color: rgba(0, 0, 0, 0.15);
@@ -18,14 +17,15 @@
   background-color: transparent;
   /*border-color: rgba(0, 0, 0, 0.5);*/
 }
-.popup__button_disabled:hover{
+
+.popup__button_disabled:hover {
   background-color: transparent;
   pointer-events: none;
 }
 
 .popup__input_type_error {
-    border-bottom-color: red;
-  } 
+  border-bottom-color: red;
+}
 
 .popup__error_visible {
   font-size: 12px;
@@ -33,26 +33,24 @@
   color: red;
 }
 
+.likes-counter {
+  font-size: 13px;
+  line-height: 16px;
+  text-align: center;
+}
 
-  .likes-counter {
-    font-size: 13px;
-    line-height: 16px;
-    text-align: center;
-  }
+.likes-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
 
-  .likes-container {
-    display: flex;
-    flex-direction: column;
-    gap: 3px
-  }
-  
-  .visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

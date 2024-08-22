@@ -1,4 +1,9 @@
-import { config, delCardApi, handleClikeLIkeAddApi, handleClikeLIkeDelApi } from "./api.js"
+import {
+  config,
+  delCardApi,
+  handleClikeLIkeAddApi,
+  handleClikeLIkeDelApi,
+} from "./api.js";
 
 const cardTemplate = document.querySelector("#card-template").content;
 
@@ -30,7 +35,7 @@ function createCard(
   });
   deleteButton.addEventListener("click", () => {
     deleteCard(cardId, card);
-  })
+  });
   return card;
 }
 
@@ -42,22 +47,14 @@ function deleteCard(cardId, card) {
 function handleClickLike(cardId, likeButton, likesCounter) {
   likeButton.classList.toggle("card__like-button_is-active");
   if (likeButton.classList.contains("card__like-button_is-active")) {
-    handleClikeLIkeAddApi(config, cardId)
-    .then((data) => {
+    handleClikeLIkeAddApi(config, cardId).then((data) => {
       likesCounter.textContent = data.likes.length;
-    })
-  }
-  else {
-    handleClikeLIkeDelApi(config, cardId)
-    .then((data) => {
+    });
+  } else {
+    handleClikeLIkeDelApi(config, cardId).then((data) => {
       likesCounter.textContent = data.likes.length;
-    })
+    });
   }
 }
-
-
-
-
-
 
 export { createCard, deleteCard, handleClickLike };
