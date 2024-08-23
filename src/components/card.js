@@ -1,19 +1,12 @@
-import {
-  config,
-  delCardApi,
-  handleClikeLIkeAddApi,
-  handleClikeLIkeDelApi,
-} from "./api.js";
-
 const cardTemplate = document.querySelector("#card-template").content;
 
 function createCard(
   name,
   link,
   userId,
+  cardOwnerId,
   cardId,
   likes,
-  openPopup,
   handleImageClick,
   handleClickLike,
   deleteCard
@@ -26,35 +19,27 @@ function createCard(
   card.querySelector(".card__title").textContent = name;
   cardImage.src = link;
   cardImage.alt = "На фотографии " + name;
-  likesCounter.textContent = likes;
+  likesCounter.textContent = likes.length;
   cardImage.addEventListener("click", (evt) => {
     handleImageClick(name, link);
   });
+  const myLikes = likes.some((likesArr) => {
+    return likesArr._id === userId;
+  });
+  if (myLikes) likeButton.classList.add("card__like-button_is-active");
   likeButton.addEventListener("click", () => {
     handleClickLike(cardId, likeButton, likesCounter);
   });
+  if (userId !== cardOwnerId) {
+    deleteButton.classList.add("visually-hidden");
+    deleteButton.setAttribute("disabled", true);
+  };
   deleteButton.addEventListener("click", () => {
     deleteCard(cardId, card);
   });
+  
   return card;
 }
 
-function deleteCard(cardId, card) {
-  delCardApi(config, cardId);
-  card.remove();
-}
 
-function handleClickLike(cardId, likeButton, likesCounter) {
-  likeButton.classList.toggle("card__like-button_is-active");
-  if (likeButton.classList.contains("card__like-button_is-active")) {
-    handleClikeLIkeAddApi(config, cardId).then((data) => {
-      likesCounter.textContent = data.likes.length;
-    });
-  } else {
-    handleClikeLIkeDelApi(config, cardId).then((data) => {
-      likesCounter.textContent = data.likes.length;
-    });
-  }
-}
-
-export { createCard, deleteCard, handleClickLike };
+export { createCard };

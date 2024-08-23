@@ -6,22 +6,32 @@ const config = {
   },
 };
 
-function changeProfileImageRequest(link, config) {
+function checkResult(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`)
+};
+
+function getUserInfo(config) {
+  return fetch(`${config.baseUrl}/users/me`, { headers: config.headers }).then(checkResult);
+};
+
+function getInitialCards(config) {
+  return fetch(`${config.baseUrl}/cards`, { headers: config.headers }).then(checkResult);
+};
+
+function setUserImage(link, config) {
   return fetch(`${config.baseUrl}/users/me/avatar`, {
     method: "PATCH",
     headers: config.headers,
     body: JSON.stringify({
       avatar: `${link}`,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
-}
+  }).then(checkResult);
+};
 
-function changeProfileInfoRequest(name, about, config) {
+function setUserInfo(name, about, config) {
   return fetch(`${config.baseUrl}/users/me`, {
     method: "PATCH",
     headers: config.headers,
@@ -29,15 +39,10 @@ function changeProfileInfoRequest(name, about, config) {
       name: name,
       about: about,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
-}
+  }).then(checkResult);
+};
 
-function postCardRequest(name, link, config) {
+function postCard(name, link, config) {
   return fetch(`${config.baseUrl}/cards`, {
     method: "POST",
     headers: config.headers,
@@ -45,56 +50,39 @@ function postCardRequest(name, link, config) {
       name: name,
       link: link,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
-}
+  }).then(checkResult);
+};
 
-function delCardApi(config, cardId) {
+function delCard(config, cardId) {
   return fetch(`${config.baseUrl}/cards/${cardId}`, {
     method: "DELETE",
     headers: config.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
-}
+  }).then(checkResult);
+};
 
-function handleClikeLIkeAddApi(config, cardId) {
+function addLike(config, cardId) {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: "PUT",
     headers: config.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
-}
+  }).then(checkResult);
+};
 
-function handleClikeLIkeDelApi(config, cardId) {
+function deleteLike(config, cardId) {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: "DELETE",
     headers: config.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
-}
+  }).then(checkResult);
+};
 
 export {
-  changeProfileImageRequest,
-  changeProfileInfoRequest,
-  postCardRequest,
+  getUserInfo,
+  getInitialCards,
+  setUserImage,
+  setUserInfo,
+  postCard,
   config,
-  delCardApi,
-  handleClikeLIkeAddApi,
-  handleClikeLIkeDelApi,
+  delCard,
+  addLike,
+  deleteLike,
 };
+
