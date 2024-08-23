@@ -24,7 +24,7 @@ import {
   newCardFormBtnSubmit,
   popupTypeImg,
   popupImg,
-  popupCaption
+  popupCaption,
 } from "./components/constans.js";
 import { createCard } from "./components/card.js";
 import { openPopup, closePopup } from "./components/modal.js";
@@ -57,7 +57,7 @@ function handleEditForm() {
   editFormName.value = profileTitle.textContent;
   editFormDescription.value = profileDescription.textContent;
   cleanValidation(editForm, validationConfig);
-};
+}
 
 editButton.addEventListener("click", handleEditForm);
 

@@ -33,13 +33,12 @@ function createCard(
   if (userId !== cardOwnerId) {
     deleteButton.classList.add("visually-hidden");
     deleteButton.setAttribute("disabled", true);
-  };
+  }
   deleteButton.addEventListener("click", () => {
     deleteCard(cardId, card);
   });
-  
+
   return card;
 }
-
 
 export { createCard };

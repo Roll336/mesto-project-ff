@@ -28,7 +28,30 @@ const popupTypeImg = document.querySelector(".popup_type_image");
 const popupImg = popupTypeImg.querySelector(".popup__image");
 const popupCaption = popupTypeImg.querySelector(".popup__caption");
 
-
-export { placesList, editButton, addCardButton, popups, popupNewAvatar, popupEdit, popupNewCard, avatarImageBtn, avatarForm, avatarFormUrl, 
-    avatarFormBtnSubmit, editForm,  editFormName, editFormDescription, editFormBtnSubmit, profileTitle, profileDescription, profileImage,
-    newCardForm, newCardFormName, newCardFormUrl, newCardFormBtnSubmit, popupTypeImg, popupImg, popupCaption }
+export {
+  placesList,
+  editButton,
+  addCardButton,
+  popups,
+  popupNewAvatar,
+  popupEdit,
+  popupNewCard,
+  avatarImageBtn,
+  avatarForm,
+  avatarFormUrl,
+  avatarFormBtnSubmit,
+  editForm,
+  editFormName,
+  editFormDescription,
+  editFormBtnSubmit,
+  profileTitle,
+  profileDescription,
+  profileImage,
+  newCardForm,
+  newCardFormName,
+  newCardFormUrl,
+  newCardFormBtnSubmit,
+  popupTypeImg,
+  popupImg,
+  popupCaption,
+};

@@ -10,16 +10,20 @@ function checkResult(res) {
   if (res.ok) {
     return res.json();
   }
-  return Promise.reject(`Ошибка: ${res.status}`)
-};
+  return Promise.reject(`Ошибка: ${res.status}`);
+}
 
 function getUserInfo(config) {
-  return fetch(`${config.baseUrl}/users/me`, { headers: config.headers }).then(checkResult);
-};
+  return fetch(`${config.baseUrl}/users/me`, { headers: config.headers }).then(
+    checkResult
+  );
+}
 
 function getInitialCards(config) {
-  return fetch(`${config.baseUrl}/cards`, { headers: config.headers }).then(checkResult);
-};
+  return fetch(`${config.baseUrl}/cards`, { headers: config.headers }).then(
+    checkResult
+  );
+}
 
 function setUserImage(link, config) {
   return fetch(`${config.baseUrl}/users/me/avatar`, {
@@ -29,7 +33,7 @@ function setUserImage(link, config) {
       avatar: `${link}`,
     }),
   }).then(checkResult);
-};
+}
 
 function setUserInfo(name, about, config) {
   return fetch(`${config.baseUrl}/users/me`, {
@@ -40,7 +44,7 @@ function setUserInfo(name, about, config) {
       about: about,
     }),
   }).then(checkResult);
-};
+}
 
 function postCard(name, link, config) {
   return fetch(`${config.baseUrl}/cards`, {
@@ -51,28 +55,28 @@ function postCard(name, link, config) {
       link: link,
     }),
   }).then(checkResult);
-};
+}
 
 function delCard(config, cardId) {
   return fetch(`${config.baseUrl}/cards/${cardId}`, {
     method: "DELETE",
     headers: config.headers,
   }).then(checkResult);
-};
+}
 
 function addLike(config, cardId) {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: "PUT",
     headers: config.headers,
   }).then(checkResult);
-};
+}
 
 function deleteLike(config, cardId) {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: "DELETE",
     headers: config.headers,
   }).then(checkResult);
-};
+}
 
 export {
   getUserInfo,
@@ -85,4 +89,3 @@ export {
   addLike,
   deleteLike,
 };
-
